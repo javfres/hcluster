@@ -1,0 +1,15 @@
+{
+    "name": "javfres/hcluster",
+    "description": "Hierarchical Clustering algorithm",
+    "authors": [
+        {
+            "name": "Javi",
+            "email": "javfres@users.noreply.github.com"
+        }
+    ],
+	"autoload": {
+		"psr-4": {
+			"Javfres\\HCluster\\": "src/"
+		}
+	}
+}
