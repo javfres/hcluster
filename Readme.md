@@ -18,7 +18,7 @@ The implementations are the basic *O(n^3)*.
         }
     ],
     "require": {
-        "javfres/hcluster": "dev"
+        "javfres/hcluster": "dev-master"
     }
 }
 ```
