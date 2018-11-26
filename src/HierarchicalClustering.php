@@ -22,8 +22,69 @@ class HierarchicalClustering {
         $this->distance = $distance;
         $this->linkage = $linkage;
         
+    }
+
+
+    //
+    // Debug functions
+    //
+
+    public function printItems(){
+
+        Utils::title("Items");
+        foreach($this->items as $it){
+            error_log("* " . $it );
+        }
 
     }
+
+    public function printDistanceMatrix(){
+
+
+        Utils::title("Distance matrix");
+        $line = str_repeat(" ", 5);
+        foreach($this->items as $i => $it){
+            $line .= str_pad($i,5);
+        }
+        error_log($line);
+        foreach($this->items as $i => $iti){
+            $line = str_pad($i,5);
+            foreach($this->items as $j => $itj){
+                $dist = $this->distance->dist($this->items[$i],$this->items[$j]);
+                $line .= str_pad( $dist,5);
+            }
+            error_log($line);
+        }
+
+
+    }
+
+
+    public function printGroups($groups){
+  
+        Utils::title("Groups");
+        error_log("Num groups " . count($groups));
+        foreach($groups as $i => $group){
+            $cb = Utils::groupcolor($i);
+            $ce = Utils:: groupcolor();
+            error_log($cb . "Group $i, items " . count($group) );
+            foreach($group as $j){
+                $id = $this->items[$j];
+                error_log("* $id");
+            }
+            error_log($ce);
+        }
+
+    
+    }
+
+
+
+
+
+
+
+
 
     public function getItem($i){
         return $this->items[$i];
@@ -31,35 +92,6 @@ class HierarchicalClustering {
 
 
     public function run(){
-
-        if($this->debug){
-
-            title("Hierarchical Clustering");
-            error_log("* Linkage: " . $this->linkage);
-
-            title("Items");
-            foreach($this->items as $i => $it){
-                $name = (string) $it;
-                error_log("$i: $name");
-            }
-
-            title("Distance matrix");
-            $line = str_repeat(" ", 5);
-            foreach($this->items as $i => $it){
-                $line .= str_pad($i,5);
-            }
-            error_log($line);
-            foreach($this->items as $i => $iti){
-                $line = str_pad($i,5);
-                foreach($this->items as $j => $itj){
-                    $dist = $this->distance->dist($this->items[$i],$this->items[$j]);
-                    $line .= str_pad( $dist,5);
-                }
-                error_log($line);
-            }
-
-
-        } // debug
 
         //
         // Create the clusters
@@ -292,6 +324,9 @@ class HierarchicalClustering {
         return [$best_a, $best_b, $best];
 
     } // getNextMergeAverage
+
+
+
 
 
 

@@ -190,7 +190,7 @@ class Cluster {
 
 
 
-    public function print($level=0, $max_length=0, $length_scale=0, $parent=null){
+    public function printDendrogram($level=0, $max_length=0, $length_scale=0, $parent=null){
 
         if($level === 0){
             Utils::title("Dendrogram");
@@ -215,31 +215,17 @@ class Cluster {
         foreach($this->items as $item){
 
             if(!is_numeric($item)){
-                $item->print($level+1,$max_length,$length_scale,$this);
+                $item->printDendrogram($level+1,$max_length,$length_scale,$this);
             }
         }
 
 
 
 
-    } // print
+    } // printDendrogram
 
 
     private function print_calculate_spaces($max_length, $length_scale, $level, $parent){
-
-        /*
-        if($parent === null){
-            $num_spaces = 0;
-            $num_points = 0;
-        } else {
-            $num_spaces = intval(($max_length-$parent->length+$level)*$length_scale);
-            $num_points = intval(($parent->length+$level-$this->length)*$length_scale);
-        }
-        $spaces = str_repeat(" ", $num_spaces) . str_repeat(".", $num_points);
-
-        return $spaces;
-        */
-
 
         $spaces = '';
 
@@ -281,7 +267,24 @@ class Cluster {
 
     }
 
-  
+
+    
+
+    //
+    // Debug functions
+    //
+    public function printGroupsAtDepths($depths = [0.8,0.6,0.4,0.2]){
+        Utils::title("Groups at depths");
+
+        foreach($depths as $depth){
+            $num = $this->groupsAtDepth($depth);
+            error_log("* Groups at $depth: $num");
+        }
+    
+    }
+
+
+
 
 
 }
