@@ -2,20 +2,24 @@
 
 namespace Javfres\HCluster;
 
-
+/**
+ * The main class of the library that perform the clustering
+ */
 class HierarchicalClustering {
 
     const LINKAGE_SINGLE   = 'single';
     const LINKAGE_COMPLETE = 'complete';
     const LINKAGE_AVERAGE  = 'average';
 
-    public $debug = false;
-
     private $items;
     private $distance;
     private $linkage;
     private $clusters;
+    private $root = null;
 
+    /**
+     * Constructor
+     */
     public function __construct($items, $distance, $linkage){
 
         $this->items = $items;
@@ -60,7 +64,7 @@ class HierarchicalClustering {
     }
 
 
-    public function printGroups($groups){
+    public function printGroups(&$groups){
   
         Utils::title("Groups");
         error_log("Num groups " . count($groups));
@@ -78,8 +82,32 @@ class HierarchicalClustering {
     
     }
 
+    public function printGroupsAtDepths($depths){
+        Utils::title("Groups at depths");
+
+        foreach($depths as $depth){
+            $num = $this->groupsAtDepth($depth);
+            error_log("* Groups at $depth: $num");
+        }
+    
+    }
 
 
+    //
+    // 
+    //
+    public function groupsAtDepth($depth){
+        return $this->root->groupsAtDepth($depth);
+    }
+
+    public function cut($max_groups=4, $min_depth=0.25){
+        return $this->root->cut($max_groups, $min_depth);
+    }
+    public function printDendrogram(){
+        return $this->root->printDendrogram();
+    }
+
+    
 
 
 
@@ -109,26 +137,12 @@ class HierarchicalClustering {
             $cluster_a = $this->clusters[$merges[0]];
             $cluster_b = $this->clusters[$merges[1]];
     
-            if($this->debug){
-                title("Iteration $i"); 
-                error_log("There are " . count($this->clusters) . " clusters" );
-                error_log("Best merge is $cluster_a and $cluster_b");
-            }
-
             $this->merge($merges);
 
             $i++;
         }
 
-        $final = $this->clusters[0];
-
-        if($this->debug){
-            title("Final cluster");
-            error_log($final);
-        }
-
-        return $final;
-
+        $this->root = $this->clusters[0];
 
     } // run
 
@@ -154,11 +168,6 @@ class HierarchicalClustering {
 
         $a->setParent($merged);
         $b->setParent($merged);
-
-
-        if($this->debug){
-            error_log("Merging $a and $b into $merged");
-        }
 
     }
 

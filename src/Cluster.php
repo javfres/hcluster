@@ -97,7 +97,7 @@ class Cluster {
     }
 
 
-    public function cut($max_groups=4, $min_depth=0.25){
+    public function cut($max_groups, $min_depth){
 
         $max_length = $this->length;
         $queue = [$this];
@@ -273,15 +273,6 @@ class Cluster {
     //
     // Debug functions
     //
-    public function printGroupsAtDepths($depths = [0.8,0.6,0.4,0.2]){
-        Utils::title("Groups at depths");
-
-        foreach($depths as $depth){
-            $num = $this->groupsAtDepth($depth);
-            error_log("* Groups at $depth: $num");
-        }
-    
-    }
 
 
 
