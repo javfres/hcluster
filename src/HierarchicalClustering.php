@@ -80,8 +80,6 @@ class HierarchicalClustering {
             error_log($line);
         }
 
-
-
     }
 
 
