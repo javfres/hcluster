@@ -134,7 +134,7 @@ class HierarchicalClustering {
             $line = str_pad($i,$WIDTH);
             foreach($this->items as $j => $itj){
                 $dist = $matrix[$i][$j];
-                $str = number_format($dist,$decimals,".","");
+                $str = $dist === 0 ? '-' : number_format($dist,$decimals,".","");
                 $line .= str_pad($str ,$WIDTH, " ", STR_PAD_LEFT);
             }
             $res .= $line . $breakline;
