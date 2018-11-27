@@ -6,12 +6,20 @@ class Utils {
 
 
     public static function title($str, $size=50){
+        error_log(trim(self::strtitle($str,"\n",$size)));
+    }
 
-        error_log(str_repeat("-",$size));
+
+    public static function strtitle($str, $breakline="\n", $size=50){
+
+        $res = '';
+
+        $res .= str_repeat("-",$size) . $breakline;
         $str = str_pad($str,$size-4," ",STR_PAD_BOTH);
-        error_log("- $str -");
-        error_log(str_repeat("-",$size));
+        $res .= "- $str -" . $breakline;
+        $res .= str_repeat("-",$size) . $breakline;
 
+        return $res;
     }
 
 
@@ -32,7 +40,6 @@ class Utils {
         ];
 
         return $colors[ $group % count($colors) ];
-
 
     }
 

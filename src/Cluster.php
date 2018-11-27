@@ -190,42 +190,48 @@ class Cluster {
 
 
 
-    public function printDendrogram($level=0, $max_length=0, $length_scale=0, $parent=null){
+    public function debugStrDendrogram($breakline="\n", $usecolor=true, $level=0, $max_length=0, $length_scale=0, $parent=null){
+
+        $res = '';
 
         if($level === 0){
-            Utils::title("Dendrogram");
+            $res .= Utils::strtitle("Dendrogram");
             $max_length = $this->length;
             $length_scale = 99.99 / $this->length;
         }
 
-        $spaces = $this->print_calculate_spaces($max_length, $length_scale, $level, $parent);
+        $spaces = $this->debugStrDendrogram_calculate_spaces($usecolor, $max_length, $length_scale, $level, $parent);
 
 
         // Color begin and end
-        $cb = Utils::groupcolor($this->group);   // Color begin
-        $ce = Utils::groupcolor();               // Color end
+        if($usecolor){
+            $cb = Utils::groupcolor($this->group);   // Color begin
+            $ce = Utils::groupcolor();               // Color end
+        } else {
+            $cb = ''; $ce='';
+        }
 
         if(count($this->items)>1){
-            error_log( $spaces . $cb . '┼'  . $this->strname() . $ce);
+            $res .= $spaces . $cb . '┼'  . $this->strname() . $ce . $breakline;
         } else {
-            error_log( $spaces . $cb . '┼' . $this->strnameleaf() . $ce);
+            $res .= $spaces . $cb . '┼' . $this->strnameleaf() . $ce . $breakline;
         }
 
 
         foreach($this->items as $item){
 
             if(!is_numeric($item)){
-                $item->printDendrogram($level+1,$max_length,$length_scale,$this);
+                $res .= $item->debugStrDendrogram($breakline, $usecolor, $level+1,$max_length,$length_scale,$this);
             }
         }
 
-
+        return $res;
 
 
     } // printDendrogram
 
 
-    private function print_calculate_spaces($max_length, $length_scale, $level, $parent){
+    private function debugStrDendrogram_calculate_spaces($usecolor, $max_length, $length_scale, $level, $parent){
 
         $spaces = '';
 
@@ -240,8 +246,12 @@ class Cluster {
 
             $num_spaces = floor(($pp->length-$p->length)*$length_scale);
             
-            $cb = Utils::groupcolor($pp->group);   // Color begin
-            $ce = Utils::groupcolor();               // Color end
+            if($usecolor){
+                $cb = Utils::groupcolor($pp->group);   // Color begin
+                $ce = Utils::groupcolor();               // Color end
+            } else {
+                $cb = ''; $ce='';
+            }
 
             $newspaces = $cb . '│' . $ce . str_repeat(" ", $num_spaces);
 
@@ -252,9 +262,13 @@ class Cluster {
         }
 
 
-        $cb = Utils::groupcolor($parent ? $parent->group : null);   // Color begin
-        $ce = Utils::groupcolor();                                  // Color end
-
+        if($usecolor){
+            $cb = Utils::groupcolor($parent ? $parent->group : null);   // Color begin
+            $ce = Utils::groupcolor();    // Color end 
+        } else {
+            $cb = ''; $ce='';
+        }
+                              
 
         if($parent === null){
             $num_points = 0;
