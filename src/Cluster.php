@@ -195,7 +195,7 @@ class Cluster {
         $res = '';
 
         if($level === 0){
-            $res .= Utils::strtitle("Dendrogram");
+            $res .= Utils::strtitle("Dendrogram", $breakline);
             $max_length = $this->length;
             $length_scale = 99.99 / $this->length;
         }
