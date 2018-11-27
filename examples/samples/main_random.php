@@ -29,7 +29,7 @@ $names_num = array_map(function($a){ return 0; },$names);
 for($i=0; $i<$NUM_SAMPLES; $i++){
     $j = rand(0, count($names)-1);
     $n = ++$names_num[$j];
-    $items[] = new SampleItem( $names[$j] . " $n", $j*10, rand(0,50), rand(0,50) );
+    $items[] = new SampleItem( $names[$j] . " $n", $j, rand(0,500)/100, rand(0,50)/100 );
 }
 
 

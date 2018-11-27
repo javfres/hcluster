@@ -9,6 +9,8 @@ The implementations are the basic *O(n^3)*.
 
 ## Composer
 
+Require from github
+
 ```
 {
     "repositories": [
@@ -22,6 +24,24 @@ The implementations are the basic *O(n^3)*.
     }
 }
 ```
+
+
+Composer for local repository
+
+{
+	"repositories": [
+		{
+		    "type": "path",
+		    "url": "/home/javier/Desktop/cluster/hcluster"
+		}
+	],
+    "require": {
+        "javfres/hcluster": "@dev"
+    }
+}
+
+
+
 
 
 ## Examples

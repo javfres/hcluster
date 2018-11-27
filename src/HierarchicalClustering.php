@@ -42,23 +42,44 @@ class HierarchicalClustering {
 
     }
 
-    public function printDistanceMatrix(){
+    public function printDistanceMatrix($decimals = 2){
+
+        //
+        // Build the matrix (to know the max width)
+        //
+        $WIDTH_INT = 0;
+        $matrix = [];
+        foreach($this->items as $i => $iti){
+            $row = [];
+            foreach($this->items as $j => $itj){
+                $dist = $i===$j ? 0 : $this->distance->dist($this->items[$i],$this->items[$j]);
+                $row[] = $dist;
+                $str = number_format($dist,0,"","");
+                $WIDTH_INT = max($WIDTH_INT, strlen($str));
+            }
+            $matrix[] = $row;
+        }
+
+
+        $WIDTH = $WIDTH_INT + $decimals + 3;
 
 
         Utils::title("Distance matrix");
-        $line = str_repeat(" ", 5);
+        $line = str_repeat(" ", $WIDTH);
         foreach($this->items as $i => $it){
-            $line .= str_pad($i,5);
+            $line .= str_pad($i,$WIDTH, " ", STR_PAD_LEFT);
         }
         error_log($line);
         foreach($this->items as $i => $iti){
-            $line = str_pad($i,5);
+            $line = str_pad($i,$WIDTH);
             foreach($this->items as $j => $itj){
-                $dist = $this->distance->dist($this->items[$i],$this->items[$j]);
-                $line .= str_pad( $dist,5);
+                $dist = $matrix[$i][$j];
+                $str = number_format($dist,$decimals,".","");
+                $line .= str_pad($str ,$WIDTH, " ", STR_PAD_LEFT);
             }
             error_log($line);
         }
+
 
 
     }
